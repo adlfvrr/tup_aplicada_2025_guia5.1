@@ -89,4 +89,33 @@ DECLARE Figura_CURSOR CURSOR FOR SELECT f.Id FROM Figuras f
 
 OPEN Figura_CURSOR
 
+DECLARE @Id INT
+
+FETCH NEXT FROM Figura_CURSOR INTO @Id_
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+EXEC sp_Calcular_Area @Id = @Id_
+END
+
+CLOSE Figura_CURSOR
+
+DEALLOCATE Figura_CURSOR
+
+GO
+
+SELECT f.Id,
+	   Tipo = CASE 
+				WHEN f.Tipo = 1 THEN 'Rectangulo'
+				WHEN f.Tipo = 2 THEN 'Circulo'
+			  ELSE 'Desconocido'
+			END ,
+	   f.Area,
+	   f.Ancho,
+	   f.Largo,
+	   f.Radio
+FROM Figuras f
+
+GO
+
 USE master
